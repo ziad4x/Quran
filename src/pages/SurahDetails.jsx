@@ -14,7 +14,7 @@ function SurahDetails() {
   const [basmalah, setBasmalah] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const reciter = 'Alafasy_128kbps'; // يمكنك تغييره لأي قارئ متاح على Everyayah
+  const reciter = 'Alafasy_128kbps';
 
   const formatNumber = (num) => String(num).padStart(3, '0');
 
@@ -52,6 +52,7 @@ function SurahDetails() {
     setCurrentAyahIndex(0);
   }, [id]);
 
+  // Scroll to current ayah
   useEffect(() => {
     if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
       setTimeout(() => {
@@ -63,6 +64,16 @@ function SurahDetails() {
     }
   }, [currentAyahIndex]);
 
+  // Preload next ayah audio
+  useEffect(() => {
+    if (currentAyahIndex < ayahs.length - 1) {
+      const nextAyahAudio = new Audio(
+        generateAyahAudioUrl(surah.number, ayahs[currentAyahIndex + 1]?.numberInSurah)
+      );
+      nextAyahAudio.preload = 'auto';
+    }
+  }, [currentAyahIndex, ayahs, surah]);
+
   const handleEnded = () => {
     if (currentAyahIndex < ayahs.length - 1) {
       setCurrentAyahIndex((prev) => prev + 1);
@@ -72,9 +83,9 @@ function SurahDetails() {
   if (loading || !surah) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#e9f3ef]">
-                <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[#1b4d3e] mb-4"></div>
-                <p className="text-[#1b4d3e] font-bold text-lg">اذكرك بالدعاء لباسل</p>
-            </div>
+        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[#1b4d3e] mb-4"></div>
+        <p className="text-[#1b4d3e] font-bold text-lg">اذكرك بالدعاء لباسل</p>
+      </div>
     );
   }
 
@@ -114,7 +125,7 @@ function SurahDetails() {
         <div className="bg-emerald-800 p-3 flex flex-col md:flex-row justify-between items-center gap-4">
           <audio
             ref={audioRef}
-            key={currentAyahIndex} 
+            key={currentAyahIndex}
             src={generateAyahAudioUrl(surah.number, ayahs[currentAyahIndex]?.numberInSurah)}
             controls
             autoPlay
