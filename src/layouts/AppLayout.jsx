@@ -102,7 +102,7 @@ function AppLayout() {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-[#e9f3ef]">
                 <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[#1b4d3e] mb-4"></div>
-                <p className="text-[#1b4d3e] font-bold text-lg">جاري تحميل البيانات...</p>
+                <p className="text-[#1b4d3e] font-bold text-lg">اذكرك بالدعاء لباسل</p>
             </div>
         );
     }
